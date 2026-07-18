@@ -1,0 +1,3 @@
+-cp haxe
+--main Main
+--hl native/src/generated/demo.c

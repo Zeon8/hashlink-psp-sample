@@ -1,42 +1,30 @@
 cmake_minimum_required(VERSION 3.11)
+project(hashlink_demo)
 
-add_definitions(-DHL_NO_THREADS)
-set(WITH_LIBS OFF)
-set(BUILD_SHARED_LIBS OFF)
-set(WITH_VM OFF)
-set(BUILD_TESTING OFF)
-set(WITH_FMT OFF)
-set(WITH_OPENAL OFF)
-set(WITH_SDL OFF)
-set(WITH_SQLITE OFF)
-set(WITH_SSL OFF)
-set(WITH_OPENAL OFF)
-set(WITH_UI OFF)
-set(WITH_UV OFF)
-set(WITH_VIDEO OFF)
-set(WITH_HEAPS OFF)
-add_subdirectory(hashlink)
+find_package(raylib)
 
-project(hello)
+set(HAXE_PATH $ENV{HAXEPATH})
+add_subdirectory(${HAXE_PATH}/lib/hashlink-psp/git ${CMAKE_BINARY_DIR}/hashlink-psp)
 
-include_directories(src/generated)
-add_executable(${PROJECT_NAME} src/main.c src/generated/hello.c)
+add_executable(${PROJECT_NAME} src/main.c src/raylib_bindings.c src/generated/demo.c)
+target_include_directories(${PROJECT_NAME} PRIVATE src/generated)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     pspdebug
     pspdisplay
     pspge
     libhl
+    raylib
 )
 
 # Create an EBOOT.PBP file
 create_pbp_file(
     TARGET ${PROJECT_NAME}
-    ICON_PATH NULL
+    ICON_PATH ${PROJECT_SOURCE_DIR}/ICON0.png
     BACKGROUND_PATH NULL
     PREVIEW_PATH NULL
-    TITLE ${PROJECT_NAME}
+    TITLE "HashLink Demo"
     VERSION 01.00
 )
 
-
+configure_file(${PROJECT_SOURCE_DIR}/player.png ${CMAKE_BINARY_DIR}/player.png COPYONLY)

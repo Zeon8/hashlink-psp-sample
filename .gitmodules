@@ -1,4 +1,0 @@
-[submodule "native/hashlink"]
-	path = native/hashlink
-	url = https://github.com/Zeon8/hashlink.git
-	branch = psp
